@@ -3,7 +3,7 @@
 
 from tkinter import *
 from tkinter import ttk, messagebox
-import csv
+
 
 
 import hashlib
@@ -42,6 +42,19 @@ Tab.add(T2, text="vertify", image=icon_tab2, compound="left")
 
 
 #################### signature func###########################
+def validate_input(event=None):
+    value = v_sc.get()
+    try:
+        sc = int(value)
+        if sc < 60 or sc > 100:
+            text = "Please enter a score between 60 and 100"
+            messagebox.showwarning("warning", text)
+            
+        else:
+            Append()
+    except :
+        text = "Please enter a number"
+        messagebox.showwarning("warning", text)
 
 def Append(event=None):
 
@@ -151,11 +164,11 @@ E4.pack(pady=5)
 L = Label(T1, text="Please enter a score between 60 and 100", font=FONT20)
 L.pack()
 v_sc = StringVar()
-E5 = ttk.Entry(T1, textvariable=v_sc, font=FONT20)
+E5 = ttk.Entry(T1, textvariable=v_sc, validate="key",validatecommand=validate_input,font=FONT20)
 E5.pack(pady=5)
-E5.bind("<Return>", Append)  # press enter  will be submit
+E5.bind("<Return>", validate_input)  # press enter  will be submit
 
-B1 = ttk.Button(T1, text="submit", command=Append)
+B1 = ttk.Button(T1, text="submit", command=validate_input)
 B1.pack(pady=30, ipadx=20, ipady=10)
 
 v_result = StringVar()
