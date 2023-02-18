@@ -5,7 +5,6 @@ from tkinter import *
 from tkinter import ttk, messagebox
 
 
-
 import hashlib
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -43,39 +42,30 @@ Tab.add(T2, text="vertify", image=icon_tab2, compound="left")
 
 #################### signature func###########################
 def validate_input(event=None):
-    value = v_sc.get()
+
     try:
-        sc = int(value)
+        sc = int(v_sc.get())
         if sc < 60 or sc > 100:
             text = "Please enter a score between 60 and 100"
             messagebox.showwarning("warning", text)
-            
+
         else:
             Append()
-    except :
-        text = "Please enter a number"
+    except:
+        text = "Please enter a interger number"
         messagebox.showwarning("warning", text)
 
-def Append(event=None):
 
+def Append(event=None):
     global index
     index += 1
-
     sname = v_sname.get()
-    data_list.append(sname)
-
     sid = v_sid.get()
-    data_list.append(sid)
-
     pname = v_pname.get()
-    data_list.append(pname)
-
     exdate = v_exdate.get()
-    data_list.append(exdate)
-
     sc = v_sc.get()
-    data_list.append(sc)
 
+    data_list = [sname, sid, pname, exdate, sc]
     SHA_512(data_list)
 
 
@@ -118,7 +108,6 @@ def Signature(msg):
         file.write(signature)
 
     text = "Project certificate has been issued successfully."
-    # v_result.set(text)
     messagebox.showinfo("success", text)
 
     ############### clear textbox###################
@@ -164,7 +153,8 @@ E4.pack(pady=5)
 L = Label(T1, text="Please enter a score between 60 and 100", font=FONT20)
 L.pack()
 v_sc = StringVar()
-E5 = ttk.Entry(T1, textvariable=v_sc, validate="key",validatecommand=validate_input,font=FONT20)
+E5 = ttk.Entry(T1, textvariable=v_sc, validate="key",
+               validatecommand=validate_input, font=FONT20)
 E5.pack(pady=5)
 E5.bind("<Return>", validate_input)  # press enter  will be submit
 
@@ -192,12 +182,11 @@ def Verification(event=None):
     except:
         text = "There is no such certificate."
         messagebox.showerror("error", text)
+        _ver_index.set("")
 
     # check date of expired
     today = str(date.today())
     date_of_expired = list_certificate[3]
-
-    # print("today", date.today())
 
     if date_of_expired <= today:
         text = "your certificate has been expired"
@@ -252,7 +241,5 @@ E3.bind("<Return>", Verification)
 
 B2 = ttk.Button(T2, text="verify", command=Verification)
 B2.pack(pady=20, ipadx=20, ipady=10)
-
-
 
 GUI.mainloop()
