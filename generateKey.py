@@ -1,7 +1,7 @@
 ###############################################REFERRENCE: CHAT GPT###########################################################
 
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
 
 # Generate a private key
 private_key = rsa.generate_private_key(
