@@ -169,7 +169,7 @@ E5.pack(pady=5)
 E5.bind("<Return>", validate_input)  # press enter  will be submit
 
 B1 = ttk.Button(T1, text="submit", command=validate_input)
-B1.pack(pady=30, ipadx=20, ipady=10)
+B1.pack(pady=20, ipadx=20, ipady=10)
 
 v_result = StringVar()
 result = ttk.Label(T1, textvariable=v_result, foreground="green")
@@ -177,17 +177,21 @@ result = ttk.Label(T1, textvariable=v_result, foreground="green")
 
 ##################################### tab2 verify #############################################
 
-def Verification():
+def Verification(event=None):
     ver_index = _ver_index.get()
     with open('public_key.pem', 'rb') as file:
         public_pem = file.read()
         public_key = load_pem_public_key(public_pem)
 
-    with open("Certificate{}.txt".format(ver_index), "r") as file:
-        list_certificate = file.read().split("\n")
+    try:
+        with open("Certificate{}.txt".format(ver_index), "r") as file:
+            list_certificate = file.read().split("\n")
 
-    with open("Signature{}.txt".format(ver_index), "rb") as file:
-        signature = file.read()  # digest2
+        with open("Signature{}.txt".format(ver_index), "rb") as file:
+            signature = file.read()  # digest2
+    except:
+        text = "There is no such certificate."
+        messagebox.showerror("error", text)
 
     # check date of expired
     today = str(date.today())
@@ -234,20 +238,21 @@ def Verification():
 ############################ end verify func############################
 
 
-L = Label(T2, text="VERIFY", font=FONT30)
+L = Label(T2, text="Verify The Certificate", font=FONT30)
 L.pack(pady=20)
 
 L = Label(T2, text="Please enter the index to verify the signature\n for example \"Certificate0\" = index 0 (enter 0)", font=FONT30)
-L.pack(pady=20)
+L.pack(pady=50)
 
 _ver_index = StringVar()
 E3 = ttk.Entry(T2, textvariable=_ver_index, font=FONT20)
 E3.pack(pady=20)
 E3.focus()
+E3.bind("<Return>", Verification)
 
 B2 = ttk.Button(T2, text="verify", command=Verification)
-B2.pack(pady=20, ipadx=15, ipady=10)
-B2.bind("<Return>", Verification)
+B2.pack(pady=20, ipadx=20, ipady=10)
+
 
 
 GUI.mainloop()
